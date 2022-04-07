@@ -13,35 +13,24 @@ exports.accessTokenGenerator = (username)=>{
 const accessTokenValidator =(req,res,token)=>{
     try{
      const data= jwt.verify(token,'secretkey')
-     //  req.acc=data.username
-      return true
+    return true
           }
     catch(error)
     {
     return false
     }
 }
-
-
 //format of token: bearer<access token>
 exports.accessTokenVerify=async (req,res,next)=>{
  const bearerHeader =req.headers['authorization']
  if(typeof bearerHeader !== 'undefined') {
-   //  console.log(bearerHeader)
-     const bearer =bearerHeader.split(' ')
- // console.log(bearer)
-     const bearerToken = bearer[1]
-     req.token=bearerToken
-     //console.log(req.token)
-    const valid = accessTokenValidator(req,res,req.token)
-    console.log(valid)
-      if (valid){
-       
-        const accountdetails=await finduserbytoken(req,res,req.token)
-     //   console.log(accountdetails)
-        req.acc=accountdetails
-       // console.log(req.acc)
-       // console.log(accountdetails.RegisterNumber)
+ const bearer =bearerHeader.split(' ')
+ const bearerToken = bearer[1]
+req.token=bearerToken
+const valid = accessTokenValidator(req,res,req.token)
+     if (valid){
+       const accountdetails=await finduserbytoken(req,res,req.token)
+      req.acc=accountdetails
      next()
     }
      else{

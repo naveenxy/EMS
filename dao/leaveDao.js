@@ -16,7 +16,7 @@ exports.updateleave=async(req,res,userid)=>{
 }
 
 exports.filter=async(req,res,leavewithmatch)=>{
-    const result= await leave.aggregate([
+    return await leave.aggregate([
          { 
             $match:
                 {$and:  
@@ -48,10 +48,10 @@ exports.filter=async(req,res,leavewithmatch)=>{
                     Status:"Approved"
             }
         }])
-    res.send(result)
+   
 }
-exports.countCL=async(req,res,acc,availableLeave)=>{
-   const result= await leave.aggregate([
+exports.countLeave=async(req,res,acc,availableLeave)=>{
+   return await leave.aggregate([
    {
        $facet:{
  "Total count CL":  [ {
@@ -90,8 +90,9 @@ exports.countCL=async(req,res,acc,availableLeave)=>{
     'Total LOP Taken': {$ifNull:[{ $arrayElemAt: ['$Total count LOP.Total', 0]},0] },
     'Available leave': {$subtract:[32,{$ifNull:[{ $arrayElemAt: ['$Available leave.Total', 0]},0] }]},
     }
-}
+},
+//{ $out : { db: "EMS", coll: "info" } }
 ])
-       res.send(result)
+      
    } 
    
