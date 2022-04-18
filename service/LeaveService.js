@@ -1,12 +1,15 @@
 const express=require('express')
 const mongoose = require('mongoose')
-const {updateleave,countLeave}=require('../dao/leaveDao')
+const {updateleave,countLeave,filter}=require('../dao/leaveDao')
 const {updateLeaveId}=require('../dao/userDao')
 const _ = require('lodash')
+const { ObjectId } = require('mongodb');
 exports.update=async(req,res)=>{
   try{
- const result= await updateleave(req,res,req.acc)
- await updateLeaveId(req,res,req.acc,result._id)
+    console.log(res.acc)
+ const result= await updateleave(req,res,res.acc)
+ console.log(result)
+ await updateLeaveId(req,res,res.acc,result._id)
  res.send("Leave applied")
   }
   catch(e){
@@ -15,7 +18,8 @@ exports.update=async(req,res)=>{
 }
 exports.filteredleave=async(req,res)=>{
  try{
-   var filterwithmatch=[ {UserID:req.acc._id}]
+  const acc=ObjectId(res.acc)
+   var filterwithmatch=[ {UserID:acc}]
    if(!_.isEmpty(req.query.type) ) filterwithmatch.push({'leaveType':req.query.type})
    const result=await filter(req,res,filterwithmatch)
    res.send(result)
@@ -27,7 +31,7 @@ exports.filteredleave=async(req,res)=>{
 exports.leaveCount=async(req,res)=>{
   try{
 var AvailableLeave=[{leaveType:'CL'},{leaveType:'EL'}]
- const result=await countLeave(req,res,req.acc._id,AvailableLeave)
+ const result=await countLeave(req,res,res.acc,AvailableLeave)
  res.send(result[0])
   }
   catch(e){

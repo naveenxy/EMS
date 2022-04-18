@@ -2,6 +2,7 @@ const express=require('express')
 const leave=require('../model/leaveModel')
 const User=require('../model/userModel')
 const mongoose = require('mongoose')
+const { ObjectId } = require('mongodb');
 exports.updateleave=async(req,res,userid)=>{
    const leavemodel=new leave(
        {
@@ -12,6 +13,7 @@ exports.updateleave=async(req,res,userid)=>{
         UserID:userid
        }
    )
+   console.log(userid)
     return await leavemodel.save()
 }
 
@@ -50,7 +52,8 @@ exports.filter=async(req,res,leavewithmatch)=>{
         }])
    
 }
-exports.countLeave=async(req,res,acc,availableLeave)=>{
+exports.countLeave=async(req,res,accc,availableLeave)=>{
+    const acc = ObjectId(accc);
    return await leave.aggregate([
    {
        $facet:{

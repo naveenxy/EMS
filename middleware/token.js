@@ -2,9 +2,9 @@ const req = require('express/lib/request')
 const jwt=require('jsonwebtoken')
 const {finduserbytoken}=require('../dao/userDao')
 
-exports.accessTokenGenerator = (username)=>{
+exports.accessTokenGenerator = (id)=>{
     const token =jwt.sign(
-        {username},
+        {id},
         'secretkey',
      {expiresIn:"180seconds"}
     )
@@ -13,6 +13,7 @@ exports.accessTokenGenerator = (username)=>{
 const accessTokenValidator =(req,res,token)=>{
     try{
      const data= jwt.verify(token,'secretkey')
+     res.acc=data.id
     return true
           }
     catch(error)
@@ -29,8 +30,8 @@ exports.accessTokenVerify=async (req,res,next)=>{
 req.token=bearerToken
 const valid = accessTokenValidator(req,res,req.token)
      if (valid){
-       const accountdetails=await finduserbytoken(req,res,req.token)
-      req.acc=accountdetails
+       //const accountdetails=await finduserbytoken(req,res,req.token)
+     // req.acc=accountdetails
      next()
     }
      else{

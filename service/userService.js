@@ -2,7 +2,7 @@ const express=require('express')
 const {hashValidator}=require('../middleware/hashing')
 const {finduser,createUser,saveToken,changepassword}=require('../dao/userDao')
 const {accessTokenGenerator}=require('../middleware/token')
-
+const _ =require('lodash')
 exports.register=async(req,res,next)=>
 {
     try{
@@ -12,8 +12,15 @@ exports.register=async(req,res,next)=>
              res.send('UserName already taken,choose another UserName')
         }
         else{
-        await createUser(req,res)
-        res.send("user created")
+     const result=   await createUser(req,res)
+     if(_.isError(result))
+     {
+       return res.send(result)
+     }
+     else return res.send('User created')
+     console.log(result)
+     res.send(result)
+         //return res.send("user created")
        }
 }
 catch(e)
@@ -24,6 +31,7 @@ exports.login=async(req,res)=>
 {
     try{
         const existingUser=await finduser(req,res)
+       console.log(existingUser) 
          if(!existingUser)
           {
         res.send("Username does not exist,Please create one")
@@ -36,8 +44,9 @@ exports.login=async(req,res)=>
         }
         else
         {
-            const access_token= accessTokenGenerator(existingUser.RegisterNumber)
-            await saveToken(req,res,existingUser.RegisterNumber,access_token)
+            const access_token= accessTokenGenerator(existingUser._id)
+           // await saveToken(req,res,existingUser._id,access_token)
+           console.log(access_token)
             res.json({
                message:'User login successful',
                access_token:access_token

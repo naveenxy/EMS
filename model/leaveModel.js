@@ -23,6 +23,11 @@ ToDate:{
 reason:{
     type:String,
     required:true
+},
+status:
+{
+    type:String,
+    default:'pending'
 }
 })  
 

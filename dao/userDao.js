@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const User=require('../model/userModel')
 const {hashGenerate}=require('../middleware/hashing')
 const req = require('express/lib/request')
+const _ =require('lodash')
 exports.createUser=async(req,res)=>{
   try{
     const hashedPassword= await hashGenerate(req.body.password)
@@ -14,10 +15,14 @@ exports.createUser=async(req,res)=>{
        password:hashedPassword,
          })
         res.user=user
-     await user.save()
+       const result= await  user.save()
+      return result
+         // console.log(err)
+      
+     
         }
         catch(e){
-          console.log(e)
+        return e
         }
   }
 exports.saveToken=async(req,res,reg,token)=>{
@@ -38,5 +43,5 @@ exports.updateLeaveId=async(req,res,id,leaveid)=>
 exports.changepassword=async(req,res)=>
 {
     const hashedPassword= await hashGenerate(req.body.password)
-    return await User.updateOne({_id:req.acc._id},{$set:{password:hashedPassword}})
+    return await User.updateOne({_id:res.acc},{$set:{password:hashedPassword}})
 }
