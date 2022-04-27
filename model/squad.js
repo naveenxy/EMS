@@ -1,36 +1,30 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const User = new Schema({
-  Name: {
+const squad = new Schema({
+  EMPLOYEE_NAME: {
     type: String,
     required: true,
     trim: true,
   },
-  RegisterNumber: {
+  BLOOD_GROUP: {
     type: String,
     required: true,
     trim: true,
-    unique: true,
   },
-  EmailId: {
+  MEDICAL_INSURANCE: {
     type: String,
-    required: [true, "please enter a Email"],
-    trim: true,
-    match: [/\S+@\S+\.\S+/, "please add valid email"],
   },
-  PhoneNumber: {
+  EMERGENCY_CONTACT_NUMBER: {
     type: String,
     match: [
       /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g,
       "ENter a valid phoneNumber",
     ],
   },
-  password: {
+  EMERGENCY_CONTACT_PERSON: {
     type: String,
   },
-  leaveId: {
-    type: [Schema.Types.ObjectId],
-  },
 });
-module.exports = mongoose.model("User", User);
+
+module.exports = mongoose.model("squad", squad);
