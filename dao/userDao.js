@@ -68,7 +68,7 @@ exports.saveexcel = async (req, res, obj) => {
 };
 exports.oursquad = async (req, res) => {
   try {
-    return await squad.find({}).select({ _id: 0, __v: 0 });
+    return await squad.find({}).select({ _id: 0, __v: 0 }).sort({"EMPLOYEE_NAME":1});
   } catch {
     console.log("error in db");
   }
