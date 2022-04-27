@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # EMPLOYEMENT MANAGEMENT SYSTEM
 
 # Features
@@ -32,3 +33,10 @@
 "xlsx": "^0.18.5"
 }
 
+=======
+#Leave Management System
+* User need to register first 
+* if user already register,user need to login
+* user can apply leave  and see how many leaves left..
+* finally,user logout
+>>>>>>> 150413dffed5d75f53145c596119a6ea40811b49
