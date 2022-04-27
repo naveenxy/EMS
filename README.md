@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # EMPLOYEMENT MANAGEMENT SYSTEM
 
 # Features
@@ -20,23 +19,13 @@
 
 # NPM used
 
-{
-"bcryptjs": "^2.4.3",
-"body-parser": "^1.20.0",
-"express": "^4.17.3",
-"jsonwebtoken": "^8.5.1",
-"lodash": "^4.17.21",
-"mongoose": "^6.2.10",
-"multer": "^1.4.4",
-"nodemailer": "^6.7.3",
-"nodemon": "^2.0.15",
-"xlsx": "^0.18.5"
-}
-
-=======
-#Leave Management System
-* User need to register first 
-* if user already register,user need to login
-* user can apply leave  and see how many leaves left..
-* finally,user logout
->>>>>>> 150413dffed5d75f53145c596119a6ea40811b49
+* "bcryptjs": "^2.4.3",
+* "body-parser": "^1.20.0",
+* "express": "^4.17.3",
+* "jsonwebtoken": "^8.5.1",
+* "lodash": "^4.17.21",
+* "mongoose": "^6.2.10",
+* "multer": "^1.4.4",
+* "nodemailer": "^6.7.3",
+* "nodemon": "^2.0.15",
+* "xlsx": "^0.18.5"
