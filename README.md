@@ -17,15 +17,4 @@
 - Nodejs
 - Json Web Token
 
-# NPM used
 
-* "bcryptjs": "^2.4.3",
-* "body-parser": "^1.20.0",
-* "express": "^4.17.3",
-* "jsonwebtoken": "^8.5.1",
-* "lodash": "^4.17.21",
-* "mongoose": "^6.2.10",
-* "multer": "^1.4.4",
-* "nodemailer": "^6.7.3",
-* "nodemon": "^2.0.15",
-* "xlsx": "^0.18.5"

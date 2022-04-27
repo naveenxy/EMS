@@ -11,7 +11,7 @@ const {
 const { accessTokenVerify } = require("../middleware/token");
 router.post("/register", register);
 router.post("/login", login);
-router.post("/uploadoursquad", upload.single("fileupload"), uploadourSquad);
-router.get("/oursquad", oursquad);
+router.post("/uploadoursquad",accessTokenVerify, upload.single("fileupload"), uploadourSquad);
+router.get("/oursquad",accessTokenVerify, oursquad);
 router.patch("/changepassword", accessTokenVerify, changepassword);
 module.exports = router;
