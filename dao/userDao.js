@@ -5,6 +5,8 @@ const { hashGenerate } = require("../middleware/hashing");
 const req = require("express/lib/request");
 const _ = require("lodash");
 const squad = require("../model/squad");
+const holiday = require("../model/holiday");
+const { findOne } = require("../model/userModel");
 exports.createUser = async (req, res) => {
   try {
     const hashedPassword = await hashGenerate(req.body.password);
@@ -39,11 +41,16 @@ exports.updateLeaveId = async (req, res, id, leaveid) => {
 };
 exports.changepassword = async (req, res) => {
   try {
-    const hashedPassword = await hashGenerate(req.body.password);
-    return await User.updateOne(
-      { _id: res.acc },
-      { $set: { password: hashedPassword } }
-    );
+    
+    
+      const hashedPassword = await hashGenerate(req.body.newpassword);
+      return await User.updateOne(
+        { _id: res.acc },
+        { $set: { password: hashedPassword } }
+      );
+    
+    
+    
   } catch {
     console.log("error in db");
   }
@@ -68,8 +75,34 @@ exports.saveexcel = async (req, res, obj) => {
 };
 exports.oursquad = async (req, res) => {
   try {
-    return await squad.find({}).select({ _id: 0, __v: 0 }).sort({"EMPLOYEE_NAME":1});
+    return await squad
+      .find({})
+      .select({ _id: 0, __v: 0 })
+      .sort({ EMPLOYEE_NAME: 1 });
   } catch {
     console.log("error in db");
   }
 };
+exports.saveholidays = async (req, res, obj) => {
+  try {
+    await holiday.deleteMany({});
+    for (var i = 0; i < obj.length; i++) {
+      var sheet = obj[i];
+      //console.log(sheet)
+      let date = new Date(Date.UTC(0, 0, sheet.date - 1));
+    //  let date=new Date((sheet.date - (25567 + 1))*86400*1000)
+
+      const fileuploaddata = new holiday({
+        Holiday_Name: sheet.holiday_name,
+        Date: date,
+      });
+
+      await fileuploaddata.save();
+    }
+  } catch {
+    console.log("error in db");
+  }
+};
+exports.finduserbyId=async(req,res)=>{
+  return await User.findOne({_id:res.acc})
+}

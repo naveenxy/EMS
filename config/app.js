@@ -6,8 +6,10 @@ const Routes = require("../routes/leaveRoute");
 const userRoute = require("../routes/userRoute");
 const res = require("express/lib/response");
 const req = require("express/lib/request");
+require("dotenv").config();
+
 mongoose.connect(
-  "mongodb://127.0.0.1:27017/EMS",
+  process.env.MONGODB_URL,
   { useNewUrlParser: true, useUnifiedTopology: true },
   () =>
     //connected to database
@@ -22,9 +24,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use("/", Routes, userRoute);
 //console.log(req)
 //mongoose.set('useCreateIndex', true);
-app.listen(3000, () =>
+app.listen(process.env.PORT, () =>
   //Listening Server
   {
-    console.log("Server started at", 3000);
+    console.log("Server started at", process.env.PORT);
   }
 );

@@ -7,6 +7,8 @@ const {
   changepassword,
   saveexcel,
   oursquad,
+  saveholidays,
+  finduserbyId,
 } = require("../dao/userDao");
 const { accessTokenGenerator } = require("../middleware/token");
 const _ = require("lodash");
@@ -16,6 +18,7 @@ const fs = require("fs");
 const db = require("../config/app");
 const { Console } = require("console");
 const res = require("express/lib/response");
+const holiday = require("../model/holiday");
 //register a user
 exports.register = async (req, res, next) => {
   try {
@@ -63,35 +66,74 @@ exports.login = async (req, res) => {
 //change password
 exports.changepassword = async (req, res) => {
   try {
-    const result = await changepassword(req, res);
-    res.send("password changed");
+    console.log(res.acc);
+    const find = await finduserbyId(req, res);
+    console.log(find);
+    const check = await hashValidator(req.body.oldpassword, find.password);
+    console.log(check);
+    if (check) {
+      const result = await changepassword(req, res);
+      res.send("password changed");
+    } else {
+      res.send("incorrect old password");
+    }
   } catch (e) {
     console.log(e);
   }
 };
 //uploaded excel sheets converting to json and storing in DB
 exports.uploadourSquad = async (req, res) => {
-  try{
-  const fileLocation = req.file.path;
-  const workbook = await XLSX.readFile(fileLocation);
-  const sheet_name_list = await workbook.SheetNames;
- const obj = await XLSX.utils.sheet_to_json( workbook.Sheets[sheet_name_list[0]]);
-  await saveexcel(req, res, obj);
-  await fs.unlink(fileLocation, () => {
-    console.log("file removed");
-  });
-  res.status(200).send({ sucess: "upload sucess" });
-}
-catch{
-  console.log("error")
-}
+  try {
+    const fileLocation = req.file.path;
+    const workbook = await XLSX.readFile(fileLocation);
+    const sheet_name_list = await workbook.SheetNames;
+    const obj = await XLSX.utils.sheet_to_json(
+      workbook.Sheets[sheet_name_list[0]]
+    );
+    await saveexcel(req, res, obj);
+    await fs.unlink(fileLocation, () => {
+      console.log("file removed");
+    });
+    res.status(200).send({ sucess: "upload sucess" });
+  } catch {
+    console.log("error");
+  }
 };
 exports.oursquad = async (req, res) => {
- try{
-  const result = await oursquad(req, res);
-  res.send(result);
- }
- catch{
-   res.send("error")
- }
+  try {
+    const result = await oursquad(req, res);
+    res.send(result);
+  } catch {
+    res.send("error");
+  }
+};
+exports.holidays = async (req, res) => {
+  try {
+    const fileLocation = req.file.path;
+    const workbook = await XLSX.readFile(fileLocation);
+    const sheet_name_list = await workbook.SheetNames;
+    const obj = await XLSX.utils.sheet_to_json(
+      workbook.Sheets[sheet_name_list[0]]
+    );
+    // console.log(obj)
+    res.send(obj);
+    await saveholidays(req, res, obj);
+    await fs.unlink(fileLocation, () => {
+      console.log("file removed");
+    });
+    // res.status(200).send({ sucess: "upload sucess" });
+  } catch {
+    console.log("error");
+  }
+};
+exports.oursquad = async (req, res) => {
+  try {
+    const result = await oursquad(req, res);
+    const result2 = await holiday.find();
+    result.push(result2);
+
+    res.send(result);
+  } catch {
+    res.send("error");
+  }
 };

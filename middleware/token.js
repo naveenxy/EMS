@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const { finduserbytoken } = require("../dao/userDao");
 
 exports.accessTokenGenerator = (id) => {
-  const token = jwt.sign({ id }, "secretkey", { expiresIn: "180seconds" });
+  const token = jwt.sign({ id }, "secretkey", { expiresIn: "1800seconds" });
   return token;
 };
 const accessTokenValidator = (req, res, token) => {
