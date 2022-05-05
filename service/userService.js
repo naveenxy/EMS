@@ -20,6 +20,8 @@ const { Console } = require("console");
 const res = require("express/lib/response");
 const holiday = require("../model/holiday");
 //register a user
+//require("dotenv").config();
+console.log(process.env.PORT)
 exports.register = async (req, res, next) => {
   try {
     const existingUsername = await finduser(req, res);
@@ -84,12 +86,12 @@ exports.changepassword = async (req, res) => {
 //uploaded excel sheets converting to json and storing in DB
 exports.uploadourSquad = async (req, res) => {
   try {
-    const fileLocation = req.file.path;
+   const fileLocation = req.file.path;
     const workbook = await XLSX.readFile(fileLocation);
     const sheet_name_list = await workbook.SheetNames;
     const obj = await XLSX.utils.sheet_to_json(
       workbook.Sheets[sheet_name_list[0]]
-    );
+    ); 
     await saveexcel(req, res, obj);
     await fs.unlink(fileLocation, () => {
       console.log("file removed");
