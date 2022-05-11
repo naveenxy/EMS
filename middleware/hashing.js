@@ -8,7 +8,7 @@ exports.hashGenerate = async (plainPassword) => {
 exports.hashValidator = async (plainPassword, hashedPassword) => {
   try {
     const result = await bcrypt.compare(plainPassword, hashedPassword);
-    return result; //returns true or false
+    return result; returns true or false
   } catch (e) {
     return false;
     res.send(e);
